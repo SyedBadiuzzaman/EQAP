@@ -1,14 +1,18 @@
-Equinox Quantitative Analytics and Predictive Platform
-🌟 Overview
-Equinox is a premium, end‑to‑end quantitative analytics platform that empowers a solo developer to ingest financial market data, engineer robust features using numpy, pandas, and scikit‑learn, train state‑of‑the‑art XGBoost models (trained on five years of historical OHLCV data), and generate actionable trading signals. The architecture is modular, test‑driven, and scalable, with a focus on maintainability, extensibility, and a forthcoming ReactJS front‑end for visual interaction.
+# Equinox Quantitative Analytics and Predictive Platform
 
-Data Ingestion – Fetches OHLCV data, news, and alternative data sources.
-Feature Engineering Pipeline – Strict, ordered stages for clean, reproducible feature generation.
-Modeling – XGBoost with class‑balancing, hyper‑parameter tuning, and comprehensive evaluation.
-Testing Suite – 100% coverage with unit, integration, and performance tests.
-Knowledge Graph – Powered by graphify to visualize code relationships and detect hidden dependencies.
+## 🌟 Overview
 
-📂 Project Structure
+Equinox is a **premium, end‑to‑end quantitative analytics platform** that empowers a solo developer to ingest financial market data, engineer robust features using `numpy`, `pandas`, and `scikit‑learn`, train state‑of‑the‑art **XGBoost** models (trained on five years of historical OHLCV data), and generate actionable trading signals. The architecture is modular, test‑driven, and scalable, with a focus on maintainability, extensibility, and a forthcoming ReactJS front‑end for visual interaction.
+
+- **Data Ingestion** – Fetches OHLCV data, news, and alternative data sources.
+- **Feature Engineering Pipeline** – Strict, ordered stages for clean, reproducible feature generation.
+- **Modeling** – XGBoost with class‑balancing, hyper‑parameter tuning, and comprehensive evaluation.
+- **Testing Suite** – 100% coverage with unit, integration, and performance tests.
+- **Knowledge Graph** – Powered by *graphify* to visualize code relationships and detect hidden dependencies.
+
+## 📂 Project Structure
+
+```
 Equinox Quantitative Analytics and Predictive Platform/
 ├─ data/                     # Raw and processed datasets
 ├─ src/                      # Source code (backend)
@@ -26,59 +30,69 @@ Equinox Quantitative Analytics and Predictive Platform/
 ├─ requirements.txt          # Python dependencies
 ├─ README.md                 # You are here
 └─ .gitignore
-🏗️ Architecture & Code Structure
+```
+
+## 🏗️ Architecture & Code Structure
+
 The knowledge graph (203 nodes, 265 edges, 21 communities) reveals the following core architecture:
-Central Abstractions (God Nodes)
-ComponentRoleFeatureEngineeringPipelineCore hub (13 edges) – orchestrates all feature stagesmain()Entry point (7 edges) – wires ingestion → features → modelinggenerate_ml_features()Feature dispatcher (6 edges) – delegates to each stagefetch_data()Data gateway (4 edges) – OHLCV ingestion for all tickers
-Module Communities
 
-Ingestion (Community 7) – fetch_data(), download_all_data(), preview_data() for multi-ticker, multi-interval OHLCV fetching.
-Preprocessing (Community 8) – preprocess_all(), process_interval(), clean_dataframe() for universal OHLCV cleaning across daily, hourly, and minute granularities.
-Feature Engineering (Communities 0–2) – FeatureEngineeringPipeline, generate_ml_features(), DataQualityMetrics, FeatureValidationConfig, and FeatureTestStrategy form a large cohesive module.
-Pipeline Orchestration (Community 9) – PipelineStage enum enforces strict execution ordering.
-Modeling (Communities 3–5) – load_data(), preprocess_data(), train(), evaluate() with time-based train/test splitting and XGBoost class balancing.
-News Fetching (Community 10) – fetch_and_save() in newsfetch.py hitting Finnhub endpoints per asset type.
-Sentiment (Community 11) – apply_sentiment() and main() in sentiment.py.
-Testing (Communities 12–20) – Isolated test nodes covering feature distribution anomalies, target variable balance, and a comprehensive suite runner.
+**Central Abstractions (God Nodes)**
 
-Known Gaps (from graph analysis)
+| Component | Role |
+|---|---|
+| `FeatureEngineeringPipeline` | Core hub (13 edges) – orchestrates all feature stages |
+| `main()` | Entry point (7 edges) – wires ingestion → features → modeling |
+| `generate_ml_features()` | Feature dispatcher (6 edges) – delegates to each stage |
+| `fetch_data()` | Data gateway (4 edges) – OHLCV ingestion for all tickers |
 
-85 nodes have ≤1 connection, primarily docstrings and standalone function descriptions – these are documentation nodes, not missing logic.
-newsfetch.py and sentiment.py communities are thin (2–3 nodes), reflecting that sentiment integration is still in progress (see Pending Work below).
-Test communities (12–20) are fragmented into singleton nodes – consider consolidating test functions under a shared test-runner class to improve graph cohesion.
-Communities 0–2 share the same 24 nodes with cohesion 0.09, indicating the feature engineering module may benefit from being split into smaller sub-modules (e.g., data quality, validation, generation).
+**Module Communities**
 
-🛠️ Tech Stack
-Backend (Python)
+- **Ingestion** (`Community 7`) – `fetch_data()`, `download_all_data()`, `preview_data()` for multi-ticker, multi-interval OHLCV fetching.
+- **Preprocessing** (`Community 8`) – `preprocess_all()`, `process_interval()`, `clean_dataframe()` for universal OHLCV cleaning across daily, hourly, and minute granularities.
+- **Feature Engineering** (`Communities 0–2`) – `FeatureEngineeringPipeline`, `generate_ml_features()`, `DataQualityMetrics`, `FeatureValidationConfig`, and `FeatureTestStrategy` form a large cohesive module.
+- **Pipeline Orchestration** (`Community 9`) – `PipelineStage` enum enforces strict execution ordering.
+- **Modeling** (`Communities 3–5`) – `load_data()`, `preprocess_data()`, `train()`, `evaluate()` with time-based train/test splitting and XGBoost class balancing.
+- **News Fetching** (`Community 10`) – `fetch_and_save()` in `newsfetch.py` hitting Finnhub endpoints per asset type.
+- **Sentiment** (`Community 11`) – `apply_sentiment()` and `main()` in `sentiment.py`.
+- **Testing** (`Communities 12–20`) – Isolated test nodes covering feature distribution anomalies, target variable balance, and a comprehensive suite runner.
 
-numpy, pandas, scikit‑learn, xgboost, matplotlib, seaborn, plotly
-Data handling: pyarrow, SQLAlchemy
-Model evaluation: statsmodels, mlflow
+**Known Gaps (from graph analysis)**
 
-Model
+- 85 nodes have ≤1 connection, primarily docstrings and standalone function descriptions – these are documentation nodes, not missing logic.
+- `newsfetch.py` and `sentiment.py` communities are thin (2–3 nodes), reflecting that sentiment integration is still in progress (see Pending Work below).
+- Test communities (12–20) are fragmented into singleton nodes – consider consolidating test functions under a shared test-runner class to improve graph cohesion.
+- Communities 0–2 share the same 24 nodes with cohesion 0.09, indicating the feature engineering module may benefit from being split into smaller sub-modules (e.g., data quality, validation, generation).
 
-Primary: Gradient‑boosted trees via XGBoost trained on 5 years of OHLCV data (2018–2023) and engineered features.
-Optional deep‑learning prototype using PyTorch for sequence modeling.
+## 🛠️ Tech Stack
 
-Frontend (React.js)
+**Backend (Python)**
+- `numpy`, `pandas`, `scikit‑learn`, `xgboost`, `matplotlib`, `seaborn`, `plotly`
+- Data handling: `pyarrow`, `SQLAlchemy`
+- Model evaluation: `statsmodels`, `mlflow`
 
-A modern SPA under the frontend/ directory, built with React 18, TypeScript, Material‑UI, and Recharts for interactive visualisation of trading signals.
+**Model**
+- Primary: Gradient‑boosted trees via **XGBoost** trained on 5 years of OHLCV data (2018–2023) and engineered features.
+- Optional deep‑learning prototype using **PyTorch** for sequence modeling.
 
-Development Timeline
+**Frontend (React.js)**
+- A modern SPA under the `frontend/` directory, built with **React 18**, **TypeScript**, **Material‑UI**, and **Recharts** for interactive visualisation of trading signals.
 
-Data ingestion & model pipeline: completed (Q1 2026).
-Front‑end prototype: in development, expected release Q3 2026.
+**Development Timeline**
+- Data ingestion & model pipeline: completed (Q1 2026).
+- Front‑end prototype: in development, expected release Q3 2026.
 
 The project remains a solo effort and is not open to external contributions at this stage.
-🚀 Getting Started
-Prerequisites
 
-Python 3.11 or newer
-git (for cloning the repo)
-Windows 10/11 (the current development environment)
+## 🚀 Getting Started
 
-Installation
-bash# Clone the repository
+### Prerequisites
+- Python 3.11 or newer
+- `git` (for cloning the repo)
+- Windows 10/11 (the current development environment)
+
+### Installation
+```bash
+# Clone the repository
 git clone "https://github.com/SyedBadiuzzaman/EQAP"
 cd equinox-quantitative-analytics
 
@@ -86,14 +100,20 @@ cd equinox-quantitative-analytics
 python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
-Running the Pipeline
-bash# Run the full end‑to‑end workflow
+```
+
+### Running the Pipeline
+```bash
+# Run the full end‑to‑end workflow
 python src/main.py --config config/default.yaml
+```
 
-Tip: Use the --dry-run flag to verify the pipeline without downloading data.
+> **Tip:** Use the `--dry-run` flag to verify the pipeline without downloading data.
 
-📊 Usage Examples
-pythonfrom src.ingestion import fetch_data
+## 📊 Usage Examples
+
+```python
+from src.ingestion import fetch_data
 from src.features import FeatureEngineeringPipeline
 from src.modeling import train_model
 
@@ -106,55 +126,75 @@ features = pipeline.transform(ohlcv)
 
 # Train a model
 model = train_model(features, target='price_change')
-🧩 Extending the Platform
+```
 
-Add a new data source – Create a module under src/ingestion/ and register it in ingestion/__init__.py.
-New feature stage – Subclass PipelineStage in src/features/ and insert it into FeatureEngineeringPipeline.
-Custom model – Implement a Model subclass in src/modeling/ and update the training script.
+## 🧩 Extending the Platform
 
-All extensions automatically appear in the graphify knowledge graph – run graphify update . after changes to keep the visualization current.
-🔮 Pending Work
-Sentiment Analysis
+1. **Add a new data source** – Create a module under `src/ingestion/` and register it in `ingestion/__init__.py`.
+2. **New feature stage** – Subclass `PipelineStage` in `src/features/` and insert it into `FeatureEngineeringPipeline`.
+3. **Custom model** – Implement a `Model` subclass in `src/modeling/` and update the training script.
 
-Collect labeled sentiment data (tweets, news headlines) for target assets.
-Train a fine‑tuned BERT‑based classifier (e.g., distilbert-base-uncased-finetuned-sst-2-english).
-Integrate sentiment scores into the feature pipeline (src/features/sentiment.py).
-Validate impact on model performance via back‑testing.
+All extensions automatically appear in the **graphify** knowledge graph – run `graphify update .` after changes to keep the visualization current.
 
-Front‑end (React)
+## 🔮 Pending Work
 
-Scaffold React 18 + TypeScript project under frontend/ (already created).
-Implement core pages: Dashboard, Signals, Historical charts.
-Connect to backend REST API (/api/signals) using axios and manage state with Redux Toolkit.
-Add real‑time updates via WebSocket (SignalR).
-Style with Material‑UI and Recharts for interactive plots.
+### Sentiment Analysis
+- Collect labeled sentiment data (tweets, news headlines) for target assets.
+- Train a fine‑tuned BERT‑based classifier (e.g., `distilbert-base-uncased-finetuned-sst-2-english`).
+- Integrate sentiment scores into the feature pipeline (`src/features/sentiment.py`).
+- Validate impact on model performance via back‑testing.
 
-Graph-Identified Refactors
+### Front‑end (React)
+- Scaffold React 18 + TypeScript project under `frontend/` (already created).
+- Implement core pages: Dashboard, Signals, Historical charts.
+- Connect to backend REST API (`/api/signals`) using `axios` and manage state with Redux Toolkit.
+- Add real‑time updates via WebSocket (SignalR).
+- Style with Material‑UI and Recharts for interactive plots.
 
-Split FeatureEngineeringPipeline community – Communities 0–2 are duplicated with low cohesion (0.09); consider splitting into DataQualityModule, FeatureValidationModule, and FeatureGenerationModule.
-Consolidate test nodes – 9 singleton test communities can be unified under a shared test class to improve discoverability and cohesion.
-Document isolated nodes – 85 weakly connected nodes identified; adding cross-module references (e.g., linking docstrings to their callers) will strengthen graph connectivity.
+### Graph-Identified Refactors
+- **Split `FeatureEngineeringPipeline` community** – Communities 0–2 are duplicated with low cohesion (0.09); consider splitting into `DataQualityModule`, `FeatureValidationModule`, and `FeatureGenerationModule`.
+- **Consolidate test nodes** – 9 singleton test communities can be unified under a shared test class to improve discoverability and cohesion.
+- **Document isolated nodes** – 85 weakly connected nodes identified; adding cross-module references (e.g., linking docstrings to their callers) will strengthen graph connectivity.
 
-Full version (backend + front‑end) targeted for release Q3 2026.
-📚 Documentation & Knowledge Graph
+Full version (backend + front‑end) targeted for release **Q3 2026**.
 
-Graph Report – 203 nodes · 265 edges · 21 communities: GRAPH_REPORT.md
-Wiki – Navigable documentation generated by graphify: graphify-out/wiki/
+## 📚 Documentation & Knowledge Graph
 
-Run graphify update . after any structural change to regenerate the graph.
-🧪 Testing
-bash# Run the full test suite
+- **Graph Report** – 203 nodes · 265 edges · 21 communities: [GRAPH_REPORT.md](graphify-out/GRAPH_REPORT.md)
+- **Wiki** – Navigable documentation generated by graphify: `graphify-out/wiki/`
+
+Run `graphify update .` after any structural change to regenerate the graph.
+
+## 🧪 Testing
+
+```bash
+# Run the full test suite
 pytest
+```
+
 The CI pipeline enforces code‑style, linting, and coverage thresholds on every pull request.
-📦 Deployment
+
+## 📦 Deployment
+
 For production, containerise the app with Docker:
-dockerfileFROM python:3.11-slim
+
+```dockerfile
+FROM python:3.11-slim
 WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
 CMD ["python", "src/main.py"]
+```
+
 Build and push to your registry, then orchestrate with Kubernetes or your favourite scheduler.
-🤝 Contributing
-Please read our CONTRIBUTING.md for guidelines on coding standards, branch strategy, and pull‑request workflow.
-📄 License
-This project is licensed under the MIT License – see the LICENSE file for details.
+
+## 🤝 Contributing
+
+Please read our [CONTRIBUTING.md](https://github.com/SyedBadiuzzaman/EQAP) for guidelines on coding standards, branch strategy, and pull‑request workflow.
+
+## 📄 License
+
+This project is licensed under the **MIT License** – see the `LICENSE` file for details.
+
+---
+*Built with ❤️ by the Equinox team. For support, open an issue or contact `team@equinox.ai`.*
