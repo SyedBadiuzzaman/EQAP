@@ -1,10 +1,16 @@
+# Security / Credentials
 .env
+
+# Local IDEs and Tools
+.vscode/
+.antigravitycli/
+
+# Cache & AI Agent State Directories
+.agents/
+.gemini/
+
+# Project Data & Artifacts (Large Files)
 data/ 
 logs/
 models/
 graphify-out/
-.agents/
-.gemini/
-.vscode/
-.antigravitycli/
-
