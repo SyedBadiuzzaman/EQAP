@@ -3,4 +3,8 @@ data/
 logs/
 models/
 graphify-out/
+.agents/
+.gemini/
+.vscode/
+.antigravitycli/
 
